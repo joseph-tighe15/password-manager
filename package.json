@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "fs": "^0.0.1-security",
+    "tsc": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0"
+  }
+}
