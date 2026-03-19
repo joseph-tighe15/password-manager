@@ -1,8 +1,8 @@
 import * as fs from 'fs';
-import * as crypto from 'crypto';
 import * as readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 import * as cryption from './service/encrypion.js'
+import { json } from 'node:stream/consumers';
 const rl = readline.createInterface({ input, output });
 
 
@@ -27,6 +27,17 @@ async function makeIfNotExists(MasterPassword: string) {
         await deleteFile(cryption.KEY_FILE.replace(".enc", ""));
     }
 }
+async function listApps() : Promise<string[]> {
+    let data = fs.readFileSync(cryption.PASS_FILE, 'utf-8')
+    let J = JSON.parse(data);
+    let out = [];
+    for (const [key, value] of Object.entries(J)) {
+        if (value && typeof value === 'object' && 'app' in value && typeof value.app === 'string') {
+            out.push(value.app);
+        }
+    }
+    return out;
+}
 async function main():Promise<void> {
 try {
     const action = await rl.question('What action do want to do (r)ead password, (m)ake password, (l)ist apps')
@@ -47,13 +58,17 @@ try {
             var password = await rl.question('What is the target password? ');
             var MasterPassword = await rl.question('What is the master password? ');
             rl.close();
-            makeIfNotExists(MasterPassword);
+            await makeIfNotExists(MasterPassword);
             var key = cryption.loadOrGenerateKey(MasterPassword);
             var cipher_suite = new cryption.Fernet(key);
             cryption.addPass(app, password, cipher_suite);
             break;
         case "L":
             rl.close();
+            var x = await listApps();
+            for (let i of x) {
+                console.log(i);
+            }
             break;
     }
 

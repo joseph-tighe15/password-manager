@@ -86,13 +86,30 @@ function makeIfNotExists(MasterPassword) {
         });
     });
 }
+function listApps() {
+    return __awaiter(this, void 0, void 0, function () {
+        var data, J, out, _i, _a, _b, key, value;
+        return __generator(this, function (_c) {
+            data = fs.readFileSync(cryption.PASS_FILE, 'utf-8');
+            J = JSON.parse(data);
+            out = [];
+            for (_i = 0, _a = Object.entries(J); _i < _a.length; _i++) {
+                _b = _a[_i], key = _b[0], value = _b[1];
+                if (value && typeof value === 'object' && 'app' in value && typeof value.app === 'string') {
+                    out.push(value.app);
+                }
+            }
+            return [2 /*return*/, out];
+        });
+    });
+}
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var action, a, _a, app, MasterPassword, key, cipher_suite, id, app, password, MasterPassword, key, cipher_suite, e_1;
+        var action, a, _a, app, MasterPassword, key, cipher_suite, id, app, password, MasterPassword, key, cipher_suite, x, _i, x_1, i, e_1;
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    _b.trys.push([0, 11, , 12]);
+                    _b.trys.push([0, 13, , 14]);
                     return [4 /*yield*/, rl.question('What action do want to do (r)ead password, (m)ake password, (l)ist apps')];
                 case 1:
                     action = _b.sent();
@@ -101,9 +118,9 @@ function main() {
                     switch (_a) {
                         case "R": return [3 /*break*/, 2];
                         case "M": return [3 /*break*/, 5];
-                        case "L": return [3 /*break*/, 9];
+                        case "L": return [3 /*break*/, 10];
                     }
-                    return [3 /*break*/, 10];
+                    return [3 /*break*/, 12];
                 case 2: return [4 /*yield*/, rl.question('What is the target app? ')];
                 case 3:
                     app = _b.sent();
@@ -115,7 +132,7 @@ function main() {
                     cipher_suite = new cryption.Fernet(key);
                     id = cryption.getID(app);
                     console.log("Password for git: ".concat(cryption.getPass(id, cipher_suite)));
-                    return [3 /*break*/, 10];
+                    return [3 /*break*/, 12];
                 case 5: return [4 /*yield*/, rl.question('What is the target app? ')];
                 case 6:
                     app = _b.sent();
@@ -126,23 +143,32 @@ function main() {
                 case 8:
                     MasterPassword = _b.sent();
                     rl.close();
-                    makeIfNotExists(MasterPassword);
+                    return [4 /*yield*/, makeIfNotExists(MasterPassword)];
+                case 9:
+                    _b.sent();
                     key = cryption.loadOrGenerateKey(MasterPassword);
                     cipher_suite = new cryption.Fernet(key);
                     cryption.addPass(app, password, cipher_suite);
-                    return [3 /*break*/, 10];
-                case 9:
+                    return [3 /*break*/, 12];
+                case 10:
                     rl.close();
-                    return [3 /*break*/, 10];
-                case 10: return [3 /*break*/, 12];
+                    return [4 /*yield*/, listApps()];
                 case 11:
+                    x = _b.sent();
+                    for (_i = 0, x_1 = x; _i < x_1.length; _i++) {
+                        i = x_1[_i];
+                        console.log(i);
+                    }
+                    return [3 /*break*/, 12];
+                case 12: return [3 /*break*/, 14];
+                case 13:
                     e_1 = _b.sent();
                     if (e_1 instanceof Error) {
                         console.error(e_1.message);
                     }
                     rl.close();
-                    return [3 /*break*/, 12];
-                case 12: return [2 /*return*/];
+                    return [3 /*break*/, 14];
+                case 14: return [2 /*return*/];
             }
         });
     });
