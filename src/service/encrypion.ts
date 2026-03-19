@@ -1,5 +1,7 @@
-import * as crypto from 'crypto';
-import * as fs from 'fs';
+/// <reference types="npm:@types/node" />
+import * as crypto from 'node:crypto';
+import * as fs from 'node:fs';
+import { Buffer } from 'node:buffer';
 
 export const KEY_FILE = "src/config/secret.key.enc";
 export const PASS_FILE = "src/config/passwords.json";

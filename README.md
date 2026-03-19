@@ -4,5 +4,5 @@
 It is a simple password manager mostly made for fun
 
 ### why use it:
-Don't it is not up to code  
+Don't, it is not up to code  
 This project was made as a coding exersize for myself, and nothing else

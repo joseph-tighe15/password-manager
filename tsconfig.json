@@ -9,5 +9,6 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*"] // Include your source files
+  "include": ["src/**/*"], // Include your source files
+  "allowImportingTsExtensions": true
 }
